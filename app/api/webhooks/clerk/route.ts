@@ -12,9 +12,7 @@ export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
   if (!WEBHOOK_SECRET) {
-    throw new Error(
-      "Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local"
-    );
+    throw new Error("Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local");
   }
 
   // Get the headers
@@ -59,6 +57,8 @@ export async function POST(req: Request) {
 
   // CREATE
   if (eventType === "user.created") {
+    console.log(eventType);
+
     const { id, email_addresses, image_url, first_name, last_name, username } = evt.data;
 
     const user = {
@@ -70,7 +70,11 @@ export async function POST(req: Request) {
       photo: image_url,
     };
 
+    console.log(user);
+
     const newUser = await createUser(user);
+
+    console.log(newUser);
 
     // Set public metadata
     if (newUser) {
